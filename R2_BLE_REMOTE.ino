@@ -25,56 +25,22 @@ SOP, FLAGS, TID, SID, DID, CID, SEQ, ERR, DATA..., CHK, EOP
 //   subsCharacteristic = '00020003 574f4f2053706865726f2121',
 // }
 
+  //  force_band = "00020005-574f-4f20-5370-6865726f2121"
+  //   api_v2 = "00010002-574f-4f20-5370-6865726f2121"
+  //    ch_force_band = self._find_characteristic(SpheroCharacteristic.force_band.value)
+  //       ch_force_band.write_value(b"usetheforce...band")
+
+  //       self.ch_api_v2 = self._find_characteristic(SpheroCharacteristic.api_v2.value)
+  //            self._executor.submit(self.manager.run)
+
+
+
 #define MAIN_SERVICE "00010001-574f-4f20-5370-6865726f2121"
 #define MAIN_CHAR "00010002-574f-4f20-5370-6865726f2121"
 #define CONNECT_SERVICE "00020001-574f-4f20-5370-6865726f2121"
 #define CONNECT_CHAR "00020005-574f-4f20-5370-6865726f2121"
 
-// typedef  enum  {
-//   apiProcessor = 0x10,
-//   systemInfo = 0x11,
-//   powerInfo = 0x13,
-//   driving = 0x16,
-//   animatronics = 0x17,
-//   sensor = 0x18,
-//   userIO = 0x1a,
-//   somethingAPI = 0x1f,
-// }DeviceId
 
-// typedef  enum  {
-//   deepSleep = 0x00,
-//   sleep = 0x01,
-//   batteryVoltage = 0x03,
-//   wake = 0x0d,
-//   something2 = 0x10, // every x time
-//   something3 = 0x04, // every x time
-//   something4 = 0x1e,
-// }PowerCommandIds
-
-// typedef  enum  {
-//   animationBundle = 0x05,
-//   shoulderAction = 0x0d,
-//   domePosition = 0x0f,
-//   shoulderActionComplete = 0x26,
-//   enableShoulderActionCompleteAsync = 0x2a,
-// }AnimatronicsCommandIds
-
-// typedef  enum  {
-//   allLEDs = 0x0e,
-//   allLEDsV21 = 0x1c,
-//   playAudioFile = 0x07,
-//   audioVolume = 0x08,
-//   stopAudio = 0xa,
-//   testSound = 0x18,
-//   startIdleLedAnimation = 0x19,
-//   matrixPixel = 0x2d,
-//   matrixColor = 0x2f,
-//   clearMatrix = 0x38,
-//   matrixRotation = 0x3a,
-//   matrixScrollText = 0x3b,
-//   matrixLine = 0x3d,
-//   matrixFill = 0x3e,
-// }UserIOCommandIds
 
 const uint8_t MSG_CONNECTION[] = { 0x75, 0x73, 0x65, 0x74, 0x68, 0x65, 0x66, 0x6F, 0x72, 0x63, 0x65, 0x2E, 0x2E, 0x2E, 0x62, 0x61, 0x6E, 0x64 };
 const uint8_t MSG_INIT[] = { 0x0A, 0x13, 0x0D };
@@ -91,9 +57,10 @@ BLECharacteristic mainChar(MAIN_CHAR);
   // protected maxVoltage = 3.65;
   // protected minVoltage = 3.4;
 
-#define ESC 0xAB
+
 #define SOP 0x8D
 #define EOP 0xD8
+#define ESC 0xAB
 #define ESC_ESC 0x23
 #define ESC_SOP 0x05
 #define ESC_EOP 0x50
