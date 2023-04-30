@@ -27,7 +27,7 @@ The Sphero API packet structure is shown below. All items are a single byte, exc
 | CHK:	| Checksum	| The sum of all bytes (excluding SOP & EOP) mod 256, bit-inverted |
 | EOP:	| End of Packet | 	Control byte identifying the end of the packet |
 
-# Packet Encoding |
+# Packet Encoding
 To avoid misinterpretations of the packet structure, the SOP and EOP bytes are never allowed in the rest of the packet. If these byte values are necessary in the payload, they are encoded before transmission and decoded by the receiving parser. The encoding method is an extension of SLIP encoding, using a two-byte escape sequence to replace special characters. This method necessitates a third special character, “escape” (ESC). The three special characters are encoded by prepending the ESC character and changing the original values to corresponding “escaped” values. These six values are shown in the table below.
 
 | Abbreviation | Description | Value |

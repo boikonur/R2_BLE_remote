@@ -3,6 +3,50 @@
 #include <array>
 
 
+// float get_battery_voltage()
+// {
+//   int data = 0;
+//   response = request(PowerCommand.get_battery_voltage)
+
+//   for (int i = 0; i < response.data.size(); i++)
+//   {
+//     data = (data << 8) | response.data[i];
+//   }
+//   return (float)data / 100.0;
+// }
+
+// int get_battery_percentage()
+// {
+//   response = self.request(PowerCommand.get_battery_percentage, timeout = 1000)
+//   return response.data[0]
+// }
+
+
+Packet(DeviceId device_id, uint8_t command_id, int flags = -1, int target_id = -1, int source_id = -1, int sequence = -1, std::vector<int> data = {})
+  {
+      this->flags = flags;
+      if (flags == -1)
+      {
+          this->flags = (int)Flag::requests_response | (int)Flag::resets_inactivity_timeout;
+      }
+      if (flags == -1 && source_id != -1)
+      {
+          this->flags |= (int)Flag::command_has_source_id;
+      }
+      if (flags == -1 && target_id != -1)
+      {
+          this->flags |= (int)Flag::command_has_target_id;
+      }
+
+      this->target_id = target_id;
+      this->source_id = source_id;
+      this->device_id = device_id;
+      this->command_id = command_id;
+      this->sequence = sequence == -1 ? generate_sequence() : sequence;
+      this->data = data;
+  }
+
+
 
 std::array<uint8_t, SpheroProtocol::maxDataSize * 2> SpheroProtocol::createPacket(const Packet& packet, size_t& packetSize) {
     std::array<uint8_t, maxDataSize * 2> rawData;

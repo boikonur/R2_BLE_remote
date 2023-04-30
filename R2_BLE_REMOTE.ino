@@ -6,56 +6,30 @@ SOP, FLAGS, TID, SID, DID, CID, SEQ, ERR, DATA..., CHK, EOP
 
 #include <bluefruit.h>
 
-// const char CONNECT_SERVICE[] = "00020001574f4f2053706865726f2121";
-// const char CONNECT_CHAR[] = "00020005574f4f2053706865726f2121";
+static constexpr char droidAddress[] = "AA:BB:CC:DD:EE:FF";
 
-// const char MAIN_SERVICE[] = "00010001574f4f2053706865726f2121";
-// const char MAIN_CHAR[] = "00010002574f4f2053706865726f2121";
+//api V2 Control Service
+static constexpr char apiV2ControlServiceUUID[] = "00010001-574f-4f20-5370-6865726f2121";
+static constexpr char apiV2MainCharacteristicUUID[] = "00010002-574f-4f20-5370-6865726f2121";  //MAIN Characteristic
 
-//  enum ServicesUUID {
-//   apiV2ControlService = '00010001 574f4f2053706865726f2121',
-//   nordicDfuService = '00020001 574f4f2053706865726f2121',
-// }
-
-//  enum CharacteristicUUID {
-//   apiV2Characteristic = '00010002 574f4f2053706865726f2121',
-//   dfuControlCharacteristic = '00020002 574f4f2053706865726f2121',
-//   dfuInfoCharacteristic = '00020004 574f4f2053706865726f2121',
-//   antiDoSCharacteristic = '00020005 574f4f2053706865726f2121',
-//   subsCharacteristic = '00020003 574f4f2053706865726f2121',
-// }
-
-  //  force_band = "00020005-574f-4f20-5370-6865726f2121"
-  //   api_v2 = "00010002-574f-4f20-5370-6865726f2121"
-  //    ch_force_band = self._find_characteristic(SpheroCharacteristic.force_band.value)
-  //       ch_force_band.write_value(b"usetheforce...band")
-
-  //       self.ch_api_v2 = self._find_characteristic(SpheroCharacteristic.api_v2.value)
-  //            self._executor.submit(self.manager.run)
+//nordic Dfu Service
+static constexpr char nordicConnectServiceUUID[] "00020001-574f-4f20-5370-6865726f2121";
+static constexpr char dfuControlCharacteristicUUID[] = "00020002-574f-4f20-5370-6865726f2121";
+static constexpr char subsCharacteristicUUID[] = "00020003-574f-4f20-5370-6865726f2121";
+static constexpr char dfuInfoCharacteristicUUID[] = "00020004-574f-4f20-5370-6865726f2121";
+static constexpr char forceBandCharacteristicUUID[] = "00020005-574f-4f20-5370-6865726f2121";  //CONNECT Characteristic  (write_value("usetheforce...band"))
 
 
 
-#define MAIN_SERVICE "00010001-574f-4f20-5370-6865726f2121"
-#define MAIN_CHAR "00010002-574f-4f20-5370-6865726f2121"
-#define CONNECT_SERVICE "00020001-574f-4f20-5370-6865726f2121"
-#define CONNECT_CHAR "00020005-574f-4f20-5370-6865726f2121"
 
+BLEService connectService(nordicConnectServiceUUID);  // Create service objects
+BLECharacteristic connectChar(forceBandCharacteristicUUID);
 
-
-const uint8_t MSG_CONNECTION[] = { 0x75, 0x73, 0x65, 0x74, 0x68, 0x65, 0x66, 0x6F, 0x72, 0x63, 0x65, 0x2E, 0x2E, 0x2E, 0x62, 0x61, 0x6E, 0x64 };
-const uint8_t MSG_INIT[] = { 0x0A, 0x13, 0x0D };
-const uint8_t MSG_OFF[] = { 0x0A, 0x13, 0x01 };
-const uint8_t MSG_ROTATE[] = {0x0A,0x17,0x0F};
-
-static const char *droidAddress = "AA:BB:CC:DD:EE:FF";
-
-BLEService connectService(CONNECT_SERVICE);  // Create service objects
-BLECharacteristic connectChar(CONNECT_CHAR);
-BLEService mainService(MAIN_SERVICE);
-BLECharacteristic mainChar(MAIN_CHAR);
+BLEService mainService(apiV2ControlServiceUUID);
+BLECharacteristic mainChar(apiV2MainCharacteristicUUID);
 //R2
-  // protected maxVoltage = 3.65;
-  // protected minVoltage = 3.4;
+//  float maxVoltage = 3.65;
+//  float minVoltage = 3.4;
 
 
 #define SOP 0x8D
@@ -116,7 +90,7 @@ void buildPacket(uint8_t *init, size_t init_len, uint8_t *payload, size_t payloa
 
 // Send a packet to the device
 void sendPacket(BLECharacteristic &characteristic, const uint8_t *packetData, uint16_t packetLength, bool waitForResponse = false, uint32_t timeout = 0) {
-  characteristic.write (packetData, packetLength);
+  characteristic.write(packetData, packetLength);
   // if (waitForResponse) {
   //   characteristic.waitForWriteCompletion(timeout);
   // }
@@ -134,9 +108,7 @@ void scan_callback(ble_gap_evt_adv_report_t *report) {
     Bluefruit.Scanner.resume();
   }
 
-  // char address[18];
-  // gap_address_to_string(report->peer_addr.addr, address);
-  // printf("Found device: %s\n", address);
+ 
 }
 
 void connect_callback(uint16_t conn_handle) {
@@ -178,5 +150,5 @@ void setup() {
 
 
 void loop() {
-   // do nothing for now
+  // do nothing for now
 }
